@@ -1,11 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { Link } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 
 const Register = () => {
-  const auth = useAuth();
-  console.log(auth);
-
+  const {CreateUser} = useAuth();
   const {
     register,
     handleSubmit,
@@ -16,6 +15,7 @@ const Register = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
+  
   return (
     <div>
       <div className="hero bg-base-200 min-h-screen">
