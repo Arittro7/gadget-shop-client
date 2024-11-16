@@ -1,6 +1,21 @@
 import { Link } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
+  const auth = useAuth();
+  console.log(auth);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
   return (
     <div>
       <div className="hero bg-base-200 min-h-screen">
@@ -13,7 +28,7 @@ const Register = () => {
             </p>
           </div>
           <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-            <form className="card-body">
+            <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -22,8 +37,11 @@ const Register = () => {
                   type="email"
                   placeholder="email"
                   className="input input-bordered"
-                  required
+                  {...register("email", { required: true })}
                 />
+                {errors.email && (
+                  <p className="text-red-500">Email is required</p>
+                )}
               </div>
               <div className="form-control">
                 <label className="label">
@@ -33,13 +51,20 @@ const Register = () => {
                   type="password"
                   placeholder="password"
                   className="input input-bordered"
-                  required
+                  {...register("password", {
+                    required: true,
+                    minLength: 6,
+                  })}
                 />
-                <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
-                    Forgot password?
-                  </a>
-                </label>
+                {errors.password && (
+                  <p className="text-red-500">
+                    {errors.password.type === "required"
+                      ? "Password is required"
+                      : errors.password.type === "minLength"
+                      ? "Password must be at least 6 characters"
+                      : "Invalid password"}
+                  </p>
+                )}
               </div>
               <div className="form-control">
                 <label className="label">
@@ -49,11 +74,21 @@ const Register = () => {
                   type="password"
                   placeholder="password"
                   className="input input-bordered"
-                  required
+                  {...register('confirmPassword', {
+                    required: true,
+                    validate: (value) => {
+                      if(watch('password') != value){
+                        return " Passwords do not match "
+                      }
+                    }
+                  })}
                 />
+                {errors.confirmPassword && 
+                <p className="text-red-500">Both Password must match</p>
+                }
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Register</button>
+                <button type="submit" className="btn btn-primary">Register</button>
               </div>
               <p className="mb-4 text-center text-sm ">
                 Already Have an account! just{" "}

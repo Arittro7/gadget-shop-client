@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react-refresh/only-export-components */
 
 import { createContext, useEffect, useState } from "react";
 import {
@@ -55,9 +57,11 @@ const AuthProvider = ({children}) => {
     GoogleLogin,
     user,
     loading,
-  };
+  }
 
-  return <AuthProvider value ={authInfo}>
+  return <AuthContext.Provider value ={authInfo}>
     {children}
-    </AuthProvider>;
+    </AuthContext.Provider>;
 };
+
+export default AuthProvider;
